@@ -1,34 +1,5 @@
 #include "Loader.hpp"
 
-#ifndef PURE_WRAPPER
-bool OmniMIDI::Loader::LoadKDMAPIModule() {
-	auto ptr = (LibImport*)OMLibImports;
-
-	if (!KDMAPILib)
-		KDMAPILib = new Lib("OmniMIDI", &ptr, OMLibImportsSize);
-
-	if (KDMAPILib->LoadLib()) {
-		return true;
-	}
-
-	return false;
-}
-
-bool OmniMIDI::Loader::FreeKDMAPIModule() {
-	if (KDMAPILib->UnloadLib()) {
-		delete KDMAPILib;
-		KDMAPILib = nullptr;
-		return true;
-	}
-
-	return false;
-}
-
-bool OmniMIDI::Loader::IsKDMAPILoaded() {
-	return KDMAPILib->IsOnline();
-}
-#endif
-
 bool OmniMIDI::Loader::LoadWinMMModule() {
 	Funcs Utils;
 	char SysDir[MAX_PATH] = { 0 };

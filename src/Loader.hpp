@@ -4,7 +4,6 @@
 #pragma once
 
 #include "Common.hpp"
-#include "OmniMIDI.hpp"
 #include "WinMM.hpp"
 #include "Utils.hpp"
 
@@ -26,9 +25,6 @@ typedef struct {
 typedef struct {
 	midi_device_internal_vtbl_t* vtbl;
 	UINT id;
-#ifdef _M_IX86
-	char gapC[4];
-#endif
 	DWORD_PTR user_ptr;
 } midi_device_internal_t;
 
@@ -37,29 +33,6 @@ using namespace OMShared;
 namespace OmniMIDI {
 	class Loader {
 	protected:
-#ifndef PURE_WRAPPER
-		Lib* KDMAPILib = nullptr;
-		LibImport OMLibImports[16] = {
-			ImpFunc(modMessage),
-			ImpFunc(IsKDMAPIAvailable),
-			ImpFunc(InitializeKDMAPIStream),
-			ImpFunc(TerminateKDMAPIStream),
-			ImpFunc(ResetKDMAPIStream),
-			ImpFunc(SendDirectData),
-			ImpFunc(SendDirectDataNoBuf),
-			ImpFunc(SendDirectLongData),
-			ImpFunc(SendDirectLongDataNoBuf),
-			ImpFunc(PrepareLongData),
-			ImpFunc(UnprepareLongData),
-			ImpFunc(InitializeCallbackFeatures),
-			ImpFunc(RunCallbackFunction),
-			ImpFunc(SendCustomEvent),
-			ImpFunc(DriverSettings),
-			ImpFunc(timeGetTime64)
-		};
-		size_t OMLibImportsSize = sizeof(OMLibImports) / sizeof(OMLibImports[0]);
-#endif
-
 		Lib* WMMBaseLib = nullptr;
 		LibImport WMMBaseLibImps[WINMMIMPORTS] = {
 			ImpMMFunc(CloseDriver),
@@ -267,12 +240,6 @@ namespace OmniMIDI {
 		size_t WinMMLibImportsSize = sizeof(WinMMLibImports) / sizeof(WinMMLibImports[0]);
 
 	public:
-#ifndef PURE_WRAPPER
-		bool LoadKDMAPIModule();
-		bool FreeKDMAPIModule();
-		bool IsKDMAPILoaded();
-#endif
-
 		bool LoadWinMMModule();
 		bool FreeWinMMModule();
 	};

@@ -16,7 +16,6 @@
 #include <cassert>
 #include "Common.hpp"
 
-#define ImpFunc(f)				LibImport((void**)&(f), #f)
 #define ImpMMFunc(f)			LibImport((void**)&(MM##f), #f)
 
 #ifdef _WIN32

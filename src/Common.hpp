@@ -9,6 +9,11 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+// MinGW/GCC only defines __i386__; the code (and MSVC) use _M_IX86
+#if defined(__i386__) && !defined(_M_IX86)
+#define _M_IX86 600
+#endif
+
 #define MAX_PATH_LONG	32767
 #define RANGE(variable, minv, maxv) ((variable) >= minv && (value) <= maxv)
 
